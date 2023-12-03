@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+Chating page
+{% endblock %}
+
+{% block content %}
+<h1>This is chat page</h1>
+<p id="message"></p>
+
+<script>
+    const chatSocket = new WebSocket('ws://localhost:8000/ws/chat/');
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const message = data['message'];
+        console.log(message);
+        document.querySelector('#message').innerHTML = message;
+        // Handle incoming message
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+</script>
+
+{% endblock %}
